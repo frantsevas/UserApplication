@@ -78,9 +78,9 @@ public class ControlPanel {
 			switch(com) {
 				case 1: {
 					System.out.println("Enter comment:");
-					String comment = in.nextLine();
+					String comment = in.next();
 					System.out.println("Enter token:");
-					String tok = in.nextLine();
+					String tok = in.next();
 					forum.addComment(comment, tok);
 					System.out.println("Comment is added");
 					break;
