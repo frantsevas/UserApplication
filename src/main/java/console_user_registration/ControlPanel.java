@@ -20,7 +20,7 @@ public class ControlPanel {
 		instruction();
 				while(true) {	
 					try {
-					int command = in.nextInt();
+					int command = Integer.valueOf(in.next());
 					if(command == -1)
 					{
 						System.out.println("The end");
@@ -74,7 +74,7 @@ public class ControlPanel {
 	public void optionForum() throws InvalidTokenException, UserNotExistException {
 		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
 		while(true) {
-			int com = in.nextInt();
+			int com = Integer.valueOf(in.next());
 			switch(com) {
 				case 1: {
 					System.out.println("Enter comment:");
