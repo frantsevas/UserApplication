@@ -13,6 +13,7 @@ public class ControlPanel {
 	private Token_Service tS = new Token_Service();
 	private User_Service_Impl uS = new User_Service_Impl(tS);
 	private Forum forum = new Forum(uS, tS);
+	private Session session = new Session();
 	
 	Scanner in = new Scanner(System.in);
 	
@@ -34,6 +35,7 @@ public class ControlPanel {
 						System.out.println("Enter password:");
 						String userPass = in.next();
 						uS.registrate(userLog, userPass);
+						instruction();
 						break;
 					}	
 					case 2: {
@@ -41,21 +43,24 @@ public class ControlPanel {
 						String userLog = in.next();
 						System.out.println("Enter password:");
 						String userPass = in.next();
-						uS.login(userLog, userPass);
+						session.saveToken(uS.login(userLog, userPass));
+						instruction();
 						break;
 					}
 					case 3: {
-						System.out.println("Enter token:");
-						String userToken = in.next();
-						uS.getUserInfo(userToken);
+						System.out.print("Your token:");
+						System.out.println(session.getCurrentToken());
+						uS.getUserInfo(session.getCurrentToken());
+						instruction();
 						break;
 					}
 					case 4: {
 						optionForum();
 					}
-					case 0: {
+					case 5: {
+						session.clearSessionData();
+						System.out.println("Session data were cleaned");
 						instruction();
-						break;
 					}
 					}
 				}
@@ -68,31 +73,44 @@ public class ControlPanel {
 	}
 	
 	public void instruction() {
-		System.out.println("Available commands : \n1 - registration \n2 - login \n3 - info about user \n0 - info about commands \n4 - option Forum \nenter command:");
+		System.out.println("Available commands : \n1 - registration \n2 - login \n3 - info about user \n4 - option Forum \n5 - clear session data \nenter command:");
+	}
+
+	public void instruction2() {
+		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
 	}
 
 	public void optionForum() throws InvalidTokenException, UserNotExistException {
-		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
+		instruction2();
 		while(true) {
-			int com = Integer.valueOf(in.next());
-            in.skip("\n");
-			switch(com) {
-				case 1: {
-					System.out.println("Enter comment:");
-					String comment = in.nextLine();
-					System.out.println("Enter token:");
-					String tok = in.next();
-					forum.addComment(comment, tok);
-					System.out.println("Comment is added");
-					break;
+			try {
+				int com = Integer.valueOf(in.next());
+				in.skip("\n");
+				switch (com) {
+					case 1: {
+						System.out.println("Enter comment:");
+						String comment = in.nextLine();
+						System.out.print("Your token:");
+						System.out.println(session.getCurrentToken());
+						forum.addComment(comment, session.getCurrentToken());
+						System.out.println("Comment is added");
+						instruction2();
+						break;
+					}
+					case 2: {
+						forum.printAll();
+						instruction2();
+						break;
+					}
+					case 3: {
+						instruction();
+						return;
+					}
 				}
-				case 2: {
-					forum.printAll();
-					break;
-				}
-				case 3: {
-					return;
-				}
+			}
+			catch (IOException e){
+					System.out.println(e.getClass());
+					instruction2();
 			}
 		}
 	}

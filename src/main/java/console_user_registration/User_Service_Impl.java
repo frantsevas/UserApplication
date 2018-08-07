@@ -10,7 +10,7 @@ import package_exceptions.UserNotExistException;
 
 public class User_Service_Impl implements User_Service {
 
-	private Token_Service token_service = new Token_Service();
+	private Token_Service token_service;
 
 	public User_Service_Impl(Token_Service token_service) {
 		this.token_service = token_service;
