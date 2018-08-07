@@ -75,10 +75,11 @@ public class ControlPanel {
 		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
 		while(true) {
 			int com = Integer.valueOf(in.next());
+            in.skip("\n");
 			switch(com) {
 				case 1: {
 					System.out.println("Enter comment:");
-					String comment = in.next();
+					String comment = in.nextLine();
 					System.out.println("Enter token:");
 					String tok = in.next();
 					forum.addComment(comment, tok);
