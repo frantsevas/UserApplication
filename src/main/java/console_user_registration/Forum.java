@@ -28,15 +28,4 @@ public class Forum {
         for(int i = 0; i<commentsList.size();i++)
             System.out.println( commentsList.get(i).getUserID() + " " + user_service_impl.findUserByID(commentsList.get(i).getUserID()).getLogin()+ "   " + commentsList.get(i).getMessage());
     }
-
-    public class Comment{
-        private long userId;
-        private String message;
-        public Comment(long userId, String message){
-            this.userId = userId;
-            this.message = message;
-        }
-        public long getUserID() { return userId;}
-        public String getMessage() { return message;}
-    }
 }

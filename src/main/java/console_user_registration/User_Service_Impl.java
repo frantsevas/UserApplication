@@ -59,7 +59,7 @@ public class User_Service_Impl implements User_Service {
 
 	public void getUserInfo(String token) throws InvalidTokenException, UserNotExistException {
 		token_service.validToken(token);
-		System.out.println("Your login: " + findUserByID(token_service.extractUserID(token)).getLogin() + "\nYour password: " + findUserByID(token_service.extractUserID(token)).getPassword() + "\nYour ID: " + findUserByID(token_service.extractUserID(token)).getId());
+		System.out.println("Your login: " + findUserByID(token_service.extractUserID(token)).getLogin() + "\nYour password: " + findUserByID(token_service.extractUserID(token)).getPassword() + "\nYour ID: " + findUserByID(token_service.extractUserID(token)).getId() + "\nYour role: " + findUserByID(token_service.extractUserID(token)).getRole());
 	}
 	
 	public User findUserByID(long UserID) throws UserNotExistException {
