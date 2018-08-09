@@ -8,6 +8,11 @@ public class Ticket {
     private long userId;
     private String message;
     private List<Comment> answersList;
+    private String subject;
+
+    public String getSubject() {
+        return subject;
+    }
 
     public long getId() {
         return id;
@@ -25,11 +30,12 @@ public class Ticket {
         return answersList;
     }
 
-    public Ticket(long id, long userId, String message){
+    public Ticket(long id, long userId, String message, String subject){
         this.id = id;
         this.message = message;
         this.userId = userId;
         answersList = new LinkedList<Comment>();
-
+        this.subject = subject;
     }
+
 }

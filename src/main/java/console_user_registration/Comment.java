@@ -9,6 +9,10 @@ public class Comment{
     }
     public long getUserID() { return userId;}
     public String getMessage() { return message;}
+
+    public String toString() {
+        return message;
+    }
 }
 
 

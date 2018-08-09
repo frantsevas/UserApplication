@@ -14,6 +14,7 @@ public class ControlPanel {
 	private User_Service_Impl uS = new User_Service_Impl(tS);
 	private Forum forum = new Forum(uS, tS);
 	private Session session = new Session();
+	private TicketService ticketService = new TicketService(tS, uS);
 	
 	Scanner in = new Scanner(System.in);
 	
@@ -61,6 +62,24 @@ public class ControlPanel {
 						session.clearSessionData();
 						System.out.println("Session data were cleaned");
 						instruction();
+					}
+					case 6: {
+						System.out.println("Enter subject:");
+						String subject = in.next();
+						System.out.println("Enter message:");
+						String message = in.next();
+						ticketService.createTicket(session.getCurrentToken(), message, subject);
+						ticketService.printAllTickets();
+						break;
+					}
+					case 7: {
+						System.out.println("Enter comment:");
+						String message = in.next();
+						ticketService.addComment(session.getCurrentToken(), message);
+						System.out.println("Enter ticketID:");
+						long id = in.nextLong();
+						ticketService.readTicket(id);
+						break;
 					}
 					}
 				}
