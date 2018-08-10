@@ -12,7 +12,7 @@ public class Comment{
 
     public String toString() {
         return message;
-    }
+    }  //TODO it should return userId + space + message
 }
 
 

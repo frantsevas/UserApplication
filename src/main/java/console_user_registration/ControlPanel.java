@@ -17,7 +17,8 @@ public class ControlPanel {
 	private TicketService ticketService = new TicketService(tS, uS);
 	
 	Scanner in = new Scanner(System.in);
-	
+
+	//TODO delete unused exceptions
 	public void start() throws LoginNotUniqueException, InvalidUserDataException, InvalidTokenException, UserNotExistException {
 		instruction();
 				while(true) {	
@@ -36,7 +37,7 @@ public class ControlPanel {
 						System.out.println("Enter password:");
 						String userPass = in.next();
 						uS.registrate(userLog, userPass);
-						instruction();
+						instruction(); //TODO extract for avoid duplicate
 						break;
 					}	
 					case 2: {
@@ -45,14 +46,14 @@ public class ControlPanel {
 						System.out.println("Enter password:");
 						String userPass = in.next();
 						session.saveToken(uS.login(userLog, userPass));
-						instruction();
+						instruction(); // duplicate
 						break;
 					}
 					case 3: {
 						System.out.print("Your token:");
 						System.out.println(session.getCurrentToken());
 						uS.getUserInfo(session.getCurrentToken());
-						instruction();
+						instruction(); // duplicate
 						break;
 					}
 					case 4: {
@@ -61,13 +62,13 @@ public class ControlPanel {
 					case 5: {
 						session.clearSessionData();
 						System.out.println("Session data were cleaned");
-						instruction();
+						instruction(); // duplicate
 					}
 					case 6: {
 						System.out.println("Enter subject:");
 						String subject = in.next();
 						System.out.println("Enter message:");
-						String message = in.next();
+						String message = in.next(); //TODO message can be with space like " 121 31 ad", use another method
 						ticketService.createTicket(session.getCurrentToken(), message, subject);
 						ticketService.printAllTickets();
 						break;
@@ -113,16 +114,16 @@ public class ControlPanel {
 						System.out.println(session.getCurrentToken());
 						forum.addComment(comment, session.getCurrentToken());
 						System.out.println("Comment is added");
-						instruction2();
+						instruction2(); //TODO
 						break;
 					}
 					case 2: {
 						forum.printAll();
-						instruction2();
+						instruction2(); //TODO
 						break;
 					}
 					case 3: {
-						instruction();
+						instruction(); //TODO
 						return;
 					}
 				}

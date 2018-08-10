@@ -25,7 +25,7 @@ public class TicketService {
 
     public void createTicket(String token, String message, String subject) throws InvalidTokenException {
         token_service.validToken(token);
-        if (ticketsList.isEmpty()) {
+        if (ticketsList.isEmpty()) { //TODO use ternary operator for simplify, if list is empty id = 0 else ...
             id = 0;
             ticket = new Ticket(id, token_service.extractUserID(token), message, subject);
         } else {
@@ -42,7 +42,7 @@ public class TicketService {
             throw new NoRightAddCommentException();
         Comment comment = new Comment(token_service.extractUserID(token), message);
         for (int i = 0; i < ticketsList.size(); i++) {
-            if (ticketsList.get(i).getId() == id)
+            if (ticketsList.get(i).getId() == id) //TODO optimize get
                 ticketsList.get(i).getAnswersList().add(comment);
         }
     }
@@ -52,6 +52,7 @@ public class TicketService {
         for (int i = 0; i < ticketsList.size(); i++) {
             counter = ticketsList.get(i);
             System.out.println("\nTicket id: " + counter.getId() + "   User id: " + counter.getUserId() + "   Subject: " + counter.getSubject() + "\nQuantity of comments: " + counter.getAnswersList().size());
+            //TODO override method toString in Ticket class and use him
         }
     }
 
