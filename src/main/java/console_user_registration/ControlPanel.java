@@ -13,14 +13,17 @@ public class ControlPanel {
 	private Token_Service tS = new Token_Service();
 	private User_Service_Impl uS = new User_Service_Impl(tS);
 	private Forum forum = new Forum(uS, tS);
+	private Session session = new Session();
+	private TicketService ticketService = new TicketService(tS, uS);
 	
 	Scanner in = new Scanner(System.in);
-	
+
+	//TODO delete unused exceptions
 	public void start() throws LoginNotUniqueException, InvalidUserDataException, InvalidTokenException, UserNotExistException {
 		instruction();
 				while(true) {	
 					try {
-					int command = in.nextInt();
+					int command = Integer.valueOf(in.next());
 					if(command == -1)
 					{
 						System.out.println("The end");
@@ -34,6 +37,7 @@ public class ControlPanel {
 						System.out.println("Enter password:");
 						String userPass = in.next();
 						uS.registrate(userLog, userPass);
+						instruction(); //TODO extract for avoid duplicate
 						break;
 					}	
 					case 2: {
@@ -41,20 +45,41 @@ public class ControlPanel {
 						String userLog = in.next();
 						System.out.println("Enter password:");
 						String userPass = in.next();
-						uS.login(userLog, userPass);
+						session.saveToken(uS.login(userLog, userPass));
+						instruction(); // duplicate
 						break;
 					}
 					case 3: {
-						System.out.println("Enter token:");
-						String userToken = in.next();
-						uS.getUserInfo(userToken);
+						System.out.print("Your token:");
+						System.out.println(session.getCurrentToken());
+						uS.getUserInfo(session.getCurrentToken());
+						instruction(); // duplicate
 						break;
 					}
 					case 4: {
 						optionForum();
 					}
-					case 0: {
-						instruction();
+					case 5: {
+						session.clearSessionData();
+						System.out.println("Session data were cleaned");
+						instruction(); // duplicate
+					}
+					case 6: {
+						System.out.println("Enter subject:");
+						String subject = in.next();
+						System.out.println("Enter message:");
+						String message = in.next(); //TODO message can be with space like " 121 31 ad", use another method
+						ticketService.createTicket(session.getCurrentToken(), message, subject);
+						ticketService.printAllTickets();
+						break;
+					}
+					case 7: {
+						System.out.println("Enter comment:");
+						String message = in.next();
+						ticketService.addComment(session.getCurrentToken(), message);
+						System.out.println("Enter ticketID:");
+						long id = in.nextLong();
+						ticketService.readTicket(id);
 						break;
 					}
 					}
@@ -68,30 +93,44 @@ public class ControlPanel {
 	}
 	
 	public void instruction() {
-		System.out.println("Available commands : \n1 - registration \n2 - login \n3 - info about user \n0 - info about commands \n4 - option Forum \nenter command:");
+		System.out.println("Available commands : \n1 - registration \n2 - login \n3 - info about user \n4 - option Forum \n5 - clear session data \nenter command:");
+	}
+
+	public void instruction2() {
+		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
 	}
 
 	public void optionForum() throws InvalidTokenException, UserNotExistException {
-		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
+		instruction2();
 		while(true) {
-			int com = in.nextInt();
-			switch(com) {
-				case 1: {
-					System.out.println("Enter comment:");
-					String comment = in.nextLine();
-					System.out.println("Enter token:");
-					String tok = in.nextLine();
-					forum.addComment(comment, tok);
-					System.out.println("Comment is added");
-					break;
+			try {
+				int com = Integer.valueOf(in.next());
+				in.skip("\n");
+				switch (com) {
+					case 1: {
+						System.out.println("Enter comment:");
+						String comment = in.nextLine();
+						System.out.print("Your token:");
+						System.out.println(session.getCurrentToken());
+						forum.addComment(comment, session.getCurrentToken());
+						System.out.println("Comment is added");
+						instruction2(); //TODO
+						break;
+					}
+					case 2: {
+						forum.printAll();
+						instruction2(); //TODO
+						break;
+					}
+					case 3: {
+						instruction(); //TODO
+						return;
+					}
 				}
-				case 2: {
-					forum.printAll();
-					break;
-				}
-				case 3: {
-					return;
-				}
+			}
+			catch (IOException e){
+					System.out.println(e.getClass());
+					instruction2();
 			}
 		}
 	}

@@ -1,12 +1,10 @@
 package console_user_registration;
 
-import java.nio.charset.Charset;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
 import org.apache.commons.lang.RandomStringUtils;
 import package_exceptions.InvalidTokenException;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Token_Service {
 	
@@ -14,7 +12,7 @@ public class Token_Service {
 	
 	public String getToken(long userID) {
 		for(int i=0; i<tokensCollection.size(); i++) {
-			if(tokensCollection.get(i).getUserID()==userID)
+			if(tokensCollection.get(i).getUserID()==userID) //TODO optimize and use { } after any "if", for improve readable
 				return tokensCollection.get(i).getToken();		
 		}
 		Token token = new Token(userID, userID + "_" + generateHash());

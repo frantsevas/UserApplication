@@ -10,7 +10,7 @@ import package_exceptions.UserNotExistException;
 
 public class User_Service_Impl implements User_Service {
 
-	private Token_Service token_service = new Token_Service();
+	private Token_Service token_service;
 
 	public User_Service_Impl(Token_Service token_service) {
 		this.token_service = token_service;
@@ -26,7 +26,7 @@ public class User_Service_Impl implements User_Service {
 		if(!isLoginUniq(login))
 			throw new LoginNotUniqueException();
 		if(usersList.isEmpty()) {
-			lastID = 0;
+			lastID = 0;			//TODO use ternary operator, see description in Ticket service
 			user = new User(login, password, lastID);
 		}
 		else {
@@ -35,6 +35,7 @@ public class User_Service_Impl implements User_Service {
 		}
 		usersList.add(user);
 		System.out.println("Welcome in system! \nYour login: " + user.getLogin() + " \nYour password: " + user.getPassword() + " \nYour ID: " + user.getId());
+		//TODO override and use method toString
 	}
 
 	public boolean isLoginUniq(String login)
@@ -59,13 +60,13 @@ public class User_Service_Impl implements User_Service {
 
 	public void getUserInfo(String token) throws InvalidTokenException, UserNotExistException {
 		token_service.validToken(token);
-		System.out.println("Your login: " + findUserByID(token_service.extractUserID(token)).getLogin() + "\nYour password: " + findUserByID(token_service.extractUserID(token)).getPassword() + "\nYour ID: " + findUserByID(token_service.extractUserID(token)).getId());
+		System.out.println("Your login: " + findUserByID(token_service.extractUserID(token)).getLogin() + "\nYour password: " + findUserByID(token_service.extractUserID(token)).getPassword() + "\nYour ID: " + findUserByID(token_service.extractUserID(token)).getId() + "\nYour role: " + findUserByID(token_service.extractUserID(token)).getRole());
 	}
 	
 	public User findUserByID(long UserID) throws UserNotExistException {
 		for(int i=0; i<usersList.size(); i++) {
 			if(usersList.get(i).getId() == UserID)
-				return usersList.get(i);
+				return usersList.get(i); //TODO optimize
 		}
 		throw new UserNotExistException();
 	}

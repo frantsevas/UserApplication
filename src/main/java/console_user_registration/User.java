@@ -4,12 +4,17 @@ public class User {
 	private long Id;
 	private String login;
 	private String password;
+	private UserRole role;
 	public User(String login, String password,long Id)
 	{
 		this.login = login;
 		this.password = password;
 		this.Id = Id;
+		this.role = UserRole.User;
 	}
+
+	public UserRole getRole() { return role; }
+	public void setRole(UserRole role) { this.role = role; }
 	public long getId() {
 		return Id;
 	}
