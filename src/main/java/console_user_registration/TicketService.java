@@ -39,14 +39,14 @@ public class TicketService {
         Comment comment = new Comment(user_service_impl.findUserByID(token_service.extractUserID(token)).getLogin(), message);
         for (int i = 0; i < ticketsList.size(); i++) {
             tempElem = ticketsList.get(i);
-            if (tempElem.getId() == ticketId) //TODO optimize get (DONE)
+            if (tempElem.getId() == ticketId)
                 tempElem.getAnswersList().add(comment);
         }
     }
 
     public void printAllTickets() {
         for(int i = 0; i <  + ticketsList.size();i++)
-            System.out.println(ticketsList.get(i).toString());  //TODO override method toString in Ticket class and use him (DONE)
+            System.out.println(ticketsList.get(i).toString());
     }
 
     public void readTicket(long id) throws TicketNotExistException {

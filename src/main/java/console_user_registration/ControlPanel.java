@@ -18,7 +18,6 @@ public class ControlPanel {
 	
 	Scanner in = new Scanner(System.in);
 
-	//TODO delete unused exceptions (DONE)
 	public void start() {
 		creatingAdmin();
 				while(true) {	
@@ -38,7 +37,7 @@ public class ControlPanel {
 						String userLog = in.next();
 						System.out.println("Enter password:");
 						String userPass = in.next();
-						uS.registrate(userLog, userPass); //TODO extract for avoid duplicate (DONE)
+						uS.registrate(userLog, userPass);
 						break;
 					}	
 					case 2: {
@@ -103,14 +102,14 @@ public class ControlPanel {
 						System.out.print("Your token:");
 						System.out.println(session.getCurrentToken());
 						forum.addComment(comment, session.getCurrentToken());
-						System.out.println("Comment is added"); //TODO (DONE)
+						System.out.println("Comment is added");
 						break;
 					}
 					case 2: {
-						forum.printAll(); //TODO (DONE)
+						forum.printAll();
 						break;
 					}
-					case 3: { //TODO (DONE)
+					case 3: {
 						return;
 					}
 				}
@@ -133,7 +132,7 @@ public class ControlPanel {
 						System.out.println("Enter subject:");
 						String subject = in.nextLine();
 						System.out.println("Enter message:");
-						String message = in.nextLine(); //TODO message can be with space like " 121 31 ad", use another method (DONE)
+						String message = in.nextLine();
 						ticketService.createTicket(session.getCurrentToken(), message, subject);
 						System.out.println("Ticket is created");
 						break;

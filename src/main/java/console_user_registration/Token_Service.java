@@ -14,7 +14,7 @@ public class Token_Service {
 	public String getToken(long userID) {
 		for(int i=0; i<tokensCollection.size(); i++) {
 			tempEl = tokensCollection.get(i);
-			if(tempEl.getUserID()==userID) { //TODO optimize and use { } after any "if", for improve readable (DONE)
+			if(tempEl.getUserID()==userID) {
 				return tempEl.getToken();
 			}
 		}

@@ -13,7 +13,7 @@ public class Comment{
 
     public String toString() {
         return login + ": " + message;
-    }  //TODO it should return userId + space + message (DONE)
+    }
 }
 
 
