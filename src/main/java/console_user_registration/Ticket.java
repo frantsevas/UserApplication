@@ -38,4 +38,7 @@ public class Ticket {
         this.subject = subject;
     }
 
+    public String toString() {
+        return "\nTicket id: " + id + "   User id: " + userId + "   Subject: " + subject + "   Quantity of comments: " + getAnswersList().size();
+    }
 }

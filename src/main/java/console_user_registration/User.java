@@ -5,6 +5,7 @@ public class User {
 	private String login;
 	private String password;
 	private UserRole role;
+    public User() {}
 	public User(String login, String password,long Id)
 	{
 		this.login = login;
@@ -32,5 +33,9 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String toString() {
+		return "\nYour login: " + login + " \nYour password: " + password + " \nYour ID: " + Id;
 	}
 }
