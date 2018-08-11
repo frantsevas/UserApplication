@@ -25,17 +25,11 @@ public class User_Service_Impl implements User_Service {
 		User user;
 		if(!isLoginUniq(login))
 			throw new LoginNotUniqueException();
-		if(usersList.isEmpty()) {
-			lastID = 0;			//TODO use ternary operator, see description in Ticket service
-			user = new User(login, password, lastID);
-		}
-		else {
-			lastID = ((LinkedList<User>) usersList).getLast().getId();
-			user = new User(login, password, ++lastID);
-		}
+		lastID = usersList.isEmpty() ? 0 : ((LinkedList<User>) usersList).getLast().getId() + 1; //TODO use ternary operator, see description in Ticket service (DONE)
+		user = new User(login, password, lastID);
 		usersList.add(user);
-		System.out.println("Welcome in system! \nYour login: " + user.getLogin() + " \nYour password: " + user.getPassword() + " \nYour ID: " + user.getId());
-		//TODO override and use method toString
+		System.out.println("Welcome in system!" + user.toString());
+		//TODO override and use method toString (DONE)
 	}
 
 	public boolean isLoginUniq(String login)
@@ -65,8 +59,9 @@ public class User_Service_Impl implements User_Service {
 	
 	public User findUserByID(long UserID) throws UserNotExistException {
 		for(int i=0; i<usersList.size(); i++) {
-			if(usersList.get(i).getId() == UserID)
-				return usersList.get(i); //TODO optimize
+			User tempEL = usersList.get(i);
+			if(tempEL.getId() == UserID)
+				return tempEL; //TODO optimize (DONE)
 		}
 		throw new UserNotExistException();
 	}

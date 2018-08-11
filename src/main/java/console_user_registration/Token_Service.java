@@ -9,11 +9,14 @@ import java.util.List;
 public class Token_Service {
 	
 	List<Token> tokensCollection = new LinkedList<>();
+	private Token tempEl;
 	
 	public String getToken(long userID) {
 		for(int i=0; i<tokensCollection.size(); i++) {
-			if(tokensCollection.get(i).getUserID()==userID) //TODO optimize and use { } after any "if", for improve readable
-				return tokensCollection.get(i).getToken();		
+			tempEl = tokensCollection.get(i);
+			if(tempEl.getUserID()==userID) { //TODO optimize and use { } after any "if", for improve readable (DONE)
+				return tempEl.getToken();
+			}
 		}
 		Token token = new Token(userID, userID + "_" + generateHash());
 		tokensCollection.add(token);

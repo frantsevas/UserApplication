@@ -18,12 +18,14 @@ public class ControlPanel {
 	
 	Scanner in = new Scanner(System.in);
 
-	//TODO delete unused exceptions
-	public void start() throws LoginNotUniqueException, InvalidUserDataException, InvalidTokenException, UserNotExistException {
-		instruction();
+	//TODO delete unused exceptions (DONE)
+	public void start() {
+		creatingAdmin();
 				while(true) {	
 					try {
+					instruction();
 					int command = Integer.valueOf(in.next());
+					in.skip("\n");
 					if(command == -1)
 					{
 						System.out.println("The end");
@@ -36,8 +38,7 @@ public class ControlPanel {
 						String userLog = in.next();
 						System.out.println("Enter password:");
 						String userPass = in.next();
-						uS.registrate(userLog, userPass);
-						instruction(); //TODO extract for avoid duplicate
+						uS.registrate(userLog, userPass); //TODO extract for avoid duplicate (DONE)
 						break;
 					}	
 					case 2: {
@@ -46,40 +47,25 @@ public class ControlPanel {
 						System.out.println("Enter password:");
 						String userPass = in.next();
 						session.saveToken(uS.login(userLog, userPass));
-						instruction(); // duplicate
 						break;
 					}
 					case 3: {
 						System.out.print("Your token:");
 						System.out.println(session.getCurrentToken());
 						uS.getUserInfo(session.getCurrentToken());
-						instruction(); // duplicate
 						break;
 					}
 					case 4: {
 						optionForum();
+						break;
 					}
 					case 5: {
 						session.clearSessionData();
 						System.out.println("Session data were cleaned");
-						instruction(); // duplicate
-					}
-					case 6: {
-						System.out.println("Enter subject:");
-						String subject = in.next();
-						System.out.println("Enter message:");
-						String message = in.next(); //TODO message can be with space like " 121 31 ad", use another method
-						ticketService.createTicket(session.getCurrentToken(), message, subject);
-						ticketService.printAllTickets();
 						break;
 					}
-					case 7: {
-						System.out.println("Enter comment:");
-						String message = in.next();
-						ticketService.addComment(session.getCurrentToken(), message);
-						System.out.println("Enter ticketID:");
-						long id = in.nextLong();
-						ticketService.readTicket(id);
+					case 6: {
+						optionTicket();
 						break;
 					}
 					}
@@ -93,17 +79,21 @@ public class ControlPanel {
 	}
 	
 	public void instruction() {
-		System.out.println("Available commands : \n1 - registration \n2 - login \n3 - info about user \n4 - option Forum \n5 - clear session data \nenter command:");
+		System.out.println("Available commands : \n1 - registration \n2 - login \n3 - info about user \n4 - option Forum \n5 - clear session data \n6 - option Ticket \nenter command:");
 	}
 
 	public void instruction2() {
 		System.out.println("Available commands : \n1 - Add comment \n2 - View all comments \n3 - Back \nenter command:");
 	}
 
-	public void optionForum() throws InvalidTokenException, UserNotExistException {
-		instruction2();
+	public void instruction3() {
+		System.out.println("Available commands : \n1 - Create ticket \n2 - Add comment \n3 - Print all tickets \n4 - Read ticket \n5 - Back \nenter command:");
+	}
+
+	public void optionForum() {
 		while(true) {
 			try {
+				instruction2();
 				int com = Integer.valueOf(in.next());
 				in.skip("\n");
 				switch (com) {
@@ -113,17 +103,14 @@ public class ControlPanel {
 						System.out.print("Your token:");
 						System.out.println(session.getCurrentToken());
 						forum.addComment(comment, session.getCurrentToken());
-						System.out.println("Comment is added");
-						instruction2(); //TODO
+						System.out.println("Comment is added"); //TODO (DONE)
 						break;
 					}
 					case 2: {
-						forum.printAll();
-						instruction2(); //TODO
+						forum.printAll(); //TODO (DONE)
 						break;
 					}
-					case 3: {
-						instruction(); //TODO
+					case 3: { //TODO (DONE)
 						return;
 					}
 				}
@@ -133,5 +120,60 @@ public class ControlPanel {
 					instruction2();
 			}
 		}
+	}
+
+	public void optionTicket() {
+		while(true) {
+			try {
+				instruction3();
+				int com = Integer.valueOf(in.next());
+				in.skip("\n");
+				switch (com) {
+					case 1: {
+						System.out.println("Enter subject:");
+						String subject = in.nextLine();
+						System.out.println("Enter message:");
+						String message = in.nextLine(); //TODO message can be with space like " 121 31 ad", use another method (DONE)
+						ticketService.createTicket(session.getCurrentToken(), message, subject);
+						System.out.println("Ticket is created");
+						break;
+					}
+					case 2: {
+						System.out.println("Enter comment:");
+						String message = in.nextLine();
+						System.out.println("Enter ticket id:");
+						long ticketId = in.nextLong();
+						ticketService.addComment(session.getCurrentToken(), ticketId, message);
+						System.out.println("Comment is added");
+						break;
+					}
+					case 3: {
+						ticketService.printAllTickets();
+						break;
+					}
+					case 4: {
+						System.out.println("Enter ticketID:");
+						long id = in.nextLong();
+						ticketService.readTicket(id);
+						break;
+					}
+					case 5: {
+						return;
+					}
+				}
+			}
+			catch (IOException e){
+				System.out.println(e.getClass());
+			}
+		}
+	}
+
+	public void creatingAdmin(){
+		User admin = new User();
+		admin.setRole(UserRole.Admin);
+		admin.setId(0);
+		admin.setLogin("admin");
+		admin.setPassword("admin");
+		uS.usersList.add(admin);
 	}
 }

@@ -1,18 +1,19 @@
 package console_user_registration;
 
 public class Comment{
-    private long userId;
+    private String login;
     private String message;
-    public Comment(long userId, String message){
-        this.userId = userId;
+
+    public Comment(String login, String message){
+        this.login = login;
         this.message = message;
     }
-    public long getUserID() { return userId;}
+    public String getLogin() { return login;}
     public String getMessage() { return message;}
 
     public String toString() {
-        return message;
-    }  //TODO it should return userId + space + message
+        return login + ": " + message;
+    }  //TODO it should return userId + space + message (DONE)
 }
 
 

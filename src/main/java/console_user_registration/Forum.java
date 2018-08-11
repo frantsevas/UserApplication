@@ -16,16 +16,16 @@ public class Forum {
         this.token_service = token_service;
     }
 
-    public void addComment(String text, String token) throws InvalidTokenException{
+    public void addComment(String text, String token) throws InvalidTokenException, UserNotExistException {
         token_service.validToken(token);
-        Comment comment = new Comment(token_service.extractUserID(token), text);
+        Comment comment = new Comment(user_service_impl.findUserByID(token_service.extractUserID(token)).getLogin(), text);
         commentsList.add(comment);
     }
 
-    public void printAll() throws UserNotExistException {
+    public void printAll() {
         if(commentsList.isEmpty())
             System.out.println("There are no comments :(");
         for(int i = 0; i<commentsList.size();i++)
-            System.out.println( commentsList.get(i).getUserID() + " " + user_service_impl.findUserByID(commentsList.get(i).getUserID()).getLogin()+ "   " + commentsList.get(i).getMessage());
+            System.out.println( commentsList.get(i).getLogin() + ": " + commentsList.get(i).getMessage());
     }
 }
